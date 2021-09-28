@@ -72,6 +72,8 @@ namespace SwitchDisplay
         {
             if(api.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
             {
+
+                logger.Info("OnApplicationStarted:: FullscreenDisplay:: " + settings.FullscreenDisplay);
                 //Display
                 if (settings.SwitchDisplays && !String.IsNullOrEmpty(settings.FullscreenDisplay))
                 {

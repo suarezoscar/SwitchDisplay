@@ -1,10 +1,14 @@
 ﻿using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
+using Playnite.SDK;
+
 namespace SwitchDisplay
 {
     public class DisplayHandler
     {
+
+        private static readonly ILogger logger = LogManager.GetLogger();
         public List<DeviceInfo> Enumerate()
         {
             var displays = new List<DeviceInfo>();
@@ -27,7 +31,7 @@ namespace SwitchDisplay
                     displays.Add(new DeviceInfo {
                         DeviceIndex = displayIndex,
                         DeviceName = display.DeviceName,
-                        DeviceString = display.DeviceString,
+                        DeviceString = monitor.DeviceString,
                         MonitorIndex = monitorIndex,
                         MonitorName = monitor.DeviceName,
                         MonitorString = String.Format("{0} {1}x{2}", monitor.DeviceString, devMode.dmPelsWidth, devMode.dmPelsHeight)
@@ -41,10 +45,15 @@ namespace SwitchDisplay
 
         public bool SwitchPrimaryDisplay(string deviceName)
         {
-            var displays = Enumerate();
-            var device = displays.Find(d => d.DeviceName.Equals(deviceName));
 
-            if(!device.DeviceName.Equals(deviceName))
+            logger.Info("SwitchPrimaryDisplay:: " + deviceName);
+
+            var displays = Enumerate();
+            var device = displays.Find(d => d.DeviceString.Equals(deviceName));
+
+            logger.Info("SwitchPrimaryDisplay::displays.Find:: " + device.DeviceString);
+
+            if (!device.DeviceString.Equals(deviceName))
             {
                 return false;
             }
